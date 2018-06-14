@@ -1,48 +1,39 @@
-// Object.prototype
-// Preson.prototype
-
 // Person constructor
-function Person(firstName, lastName, dob) {
-    this.firsName = firstName;
+function Person(firstName, lastName) {
+    this.firstName = firstName;
     this.lastName = lastName;
-    // this.age = age;
-    this.birthday = new Date(dob);
-    // this.calculateAge = function() {
-    //     const diff = Date.now() - this.birthday.getTime();
-    //     const ageDate = new Date(diff);
-    //     return Math.abs(ageDate.getUTCFullYear() - 1970);
-    // }
 }
 
-// Calculate age
-Person.prototype.calculateAge = function() {
-    const diff = Date.now() - this.birthday.getTime();
-    const ageDate = new Date(diff);
-    return Math.abs(ageDate.getUTCFullYear() - 1970);
+// Greeting
+Person.prototype.greeting = function() {
+    return `Hello there ${this.firstName} ${this.lastName}`;
 }
 
-// Get full name
-Person.prototype.getFullName = function() {
-    return `${this.firsName} ${this.lastName}`;
+const person1 = new Person('Pasha', 'Petrov');
+
+console.log(person1.greeting())
+
+// Inherit the Person prototype methods
+Customer.prototype = Object.create(Person.prototype);
+
+// Make customer.prototype return Customer()
+Customer.prototype.constructor = Customer;
+
+// Customer constructor
+function Customer(firstName, lastName, phone, membership) {
+    Person.call(this, firstName, lastName);
+
+    this.phone = phone;
+    this.membership = membership;
 }
 
-// Get married
-Person.prototype.getsMaried = function(newLastName) {
-    this.lastName = newLastName;
+// Create customer
+const customer1 = new Customer('Masha', 'Ivanova', '111-111-11-11', 'Premium');
+
+console.log(customer1);
+
+// Customer greeting
+Customer.prototype.greeting = function() {
+    return `Hello there ${this.firstName} ${this.lastName} welcome !`;
 }
-
-const pasha = new Person('Pavel', 'Ivanov', '8-12-90');
-const masha = new Person('Masha', 'Petrova', 'March 20 1978');
-
-console.log(masha);
-
-console.log(masha.calculateAge());
-
-console.log(masha.getFullName());
-
-masha.getsMaried('Ivanova');
-
-console.log(masha.getFullName());
-
-console.log(masha.hasOwnProperty('firstName'));
-console.log(masha.hasOwnProperty('getFullName'));
+console.log(customer1.greeting());
